@@ -1,62 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Feliz Cumpleaños</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background-color: #ffeef5;
-            color: #333;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        input {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 20px;
-            background-color: #ff80ab;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #ff4081;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Feliz Cumpleaños!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #ffe6f0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #fff0f6;
+      padding: 30px 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 320px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #ff4081;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      width: 80%;
+      border: 2px solid #ff80ab;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #ff4081;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e73370;
+    }
+  </style>
 </head>
 <body>
-    <h1>¡Feliz cumpleaños Nomi <3!</h1>
-    <p>¿Cuántos años cumples?</p>
-    <input type="number" id="respuesta" placeholder="Escribe aquí...">
-    <br>
-    <button onclick="verificarRespuesta()">Enviar</button>
 
-    <script>
-        function verificarRespuesta() {
-            const respuesta = document.getElementById('respuesta').value;
-            if (respuesta == '19') {
-                window.location.href = "pregunta.html";
-            } else {
-                alert('No te hagas la mensa');
-            }
-        }
-    </script>
+  <div class="container">
+    <h1>¡Feliz cumpleaños Nomi <3!</h1>
+    <label for="edad">¿Cuántos años cumples?</label>
+    <input type="number" id="edad" />
+    <button onclick="verificarEdad()">Enviar</button>
+  </div>
+
+  <script>
+    function verificarEdad() {
+      const edad = document.getElementById('edad').value;
+      if (edad === '19') {
+        window.location.href = "pregunta.html"; // Cambia por la siguiente página
+      } else {
+        alert("¡Ups! Esa no es la edad correcta.");
+      }
+    }
+  </script>
+
 </body>
 </html>
