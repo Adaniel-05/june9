@@ -1,91 +1,112 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>¡Sorpresa!</title>
-    <style>
-        body {
-            text-align: center;
-            margin-top: 50px;
-            background-color: #ffeef5;
-            font-family: 'Arial', sans-serif;
-            color: #333;
-        }
-        #canvasContainer {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 0 auto;
-            border: 3px solid #ff80ab;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            touch-action: none;
-        }
-        img {
-            width: 300px;
-            height: 300px;
-            display: block;
-        }
-        h1 {
-            color: #ff4081;
-            margin-bottom: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>¡Sorpresa!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Arial', sans-serif;
+      background-color: #ffeef5;
+      color: #333;
+      text-align: center;
+    }
+
+    h1 {
+      color: #ff4081;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    #canvasContainer {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1080 / 1350;
+      margin: 0 auto;
+      border: 3px solid #ff80ab;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    canvas, img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>¡Rasga para ver tu sorpresa!</h1>
-    <div id="canvasContainer">
-        <img id="bgImage" src="sorpresa.png">
-        <canvas id="scratchCanvas" width="300" height="300"></canvas>
-    </div>
-    <p>Desliza tu dedo o mouse sobre la imagen</p>
+  <h1>¡Rasga para ver tu sorpresa!</h1>
 
-    <script>
-        const canvas = document.getElementById('scratchCanvas');
-        const ctx = canvas.getContext('2d');
+  <div id="canvasContainer">
+    <img id="bgImage" src="sorpresa.png" alt="Sorpresa">
+    <canvas id="scratchCanvas"></canvas>
+  </div>
 
-        ctx.fillStyle = '#cccccc';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+  <p>Desliza tu dedo o mouse sobre la imagen</p>
 
-        let isDrawing = false;
+  <script>
+    const canvas = document.getElementById('scratchCanvas');
+    const ctx = canvas.getContext('2d');
 
-        function getPos(e) {
-            if (e.touches) {
-                return {
-                    x: e.touches[0].clientX - canvas.getBoundingClientRect().left,
-                    y: e.touches[0].clientY - canvas.getBoundingClientRect().top
-                };
-            } else {
-                return {
-                    x: e.clientX - canvas.getBoundingClientRect().left,
-                    y: e.clientY - canvas.getBoundingClientRect().top
-                };
-            }
-        }
+    function resizeCanvas() {
+      const container = document.getElementById('canvasContainer');
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
 
-        function scratch(e) {
-            if (!isDrawing) return;
-            const pos = getPos(e);
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
-            ctx.fill();
-        }
+      ctx.fillStyle = '#d3d3d3';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
-        canvas.addEventListener('mousedown', e => { isDrawing = true; scratch(e); });
-        canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('mouseup', () => { isDrawing = false; });
+    window.addEventListener('load', resizeCanvas);
+    window.addEventListener('resize', resizeCanvas);
 
-        canvas.addEventListener('touchstart', e => { isDrawing = true; scratch(e); });
-        canvas.addEventListener('touchmove', e => { scratch(e); e.preventDefault(); });
-        canvas.addEventListener('touchend', () => { isDrawing = false; });
-    </script>
+    let isDrawing = false;
 
+    function getPos(e) {
+      if (e.touches && e.touches.length > 0) {
+        return {
+          x: e.touches[0].clientX - canvas.getBoundingClientRect().left,
+          y: e.touches[0].clientY - canvas.getBoundingClientRect().top
+        };
+      } else {
+        return {
+          x: e.clientX - canvas.getBoundingClientRect().left,
+          y: e.clientY - canvas.getBoundingClientRect().top
+        };
+      }
+    }
+
+    function scratch(e) {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, 30, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    canvas.addEventListener('mousedown', e => { isDrawing = true; scratch(e); });
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('mouseup', () => { isDrawing = false; });
+
+    canvas.addEventListener('touchstart', e => { isDrawing = true; scratch(e); });
+    canvas.addEventListener('touchmove', e => { scratch(e); e.preventDefault(); });
+    canvas.addEventListener('touchend', () => { isDrawing = false; });
+  </script>
 </body>
 </html>
