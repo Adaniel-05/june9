@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¿Me quieres?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #ffeef5;
+            color: #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #ff4081;
+            margin-bottom: 40px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 15px;
+            background-color: #ff80ab;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff4081;
+        }
+    </style>
+</head>
+<body>
+    <h1>¿Me quieres?</h1>
+    <button onclick="si()">Sí</button>
+    <button onclick="no()">No</button>
+
+    <script>
+        function si() {
+            window.location.href = "sorpresa.html";
+        }
+        function no() {
+            const mensaje = "¡Mentira! Yo sé que sí me quieres, solo te haces la difícil...";
+            const ventana = document.createElement('div');
+            ventana.style.position = 'fixed';
+            ventana.style.top = '50%';
+            ventana.style.left = '50%';
+            ventana.style.transform = 'translate(-50%, -50%)';
+            ventana.style.backgroundColor = '#fff0f5';
+            ventana.style.border = '2px solid #ff80ab';
+            ventana.style.borderRadius = '15px';
+            ventana.style.padding = '30px';
+            ventana.style.boxShadow = '0 0 20px rgba(0,0,0,0.2)';
+            ventana.innerHTML = `
+                <h2 style="color:#ff4081;">Ups...</h2>
+                <p style="font-size:18px; color:#333;">${mensaje}</p>
+                <button onclick="cerrarVentana()" style="margin-top:20px; padding:10px 20px; background-color:#ff80ab; color:white; border:none; border-radius:8px; cursor:pointer;">Cerrar</button>
+            `;
+            document.body.appendChild(ventana);
+        }
+        function cerrarVentana() {
+            document.body.removeChild(document.querySelector('div'));
+        }
+    </script>
+</body>
+</html>
