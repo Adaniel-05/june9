@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Un mensaje especial</title>
+  <style>
+    body {
+      background-color: #ffeef5;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #fff0f7;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+      max-width: 360px;
+    }
+
+    h1 {
+      color: #ff4081;
+      margin-bottom: 15px;
+      font-size: 1.6rem;
+    }
+
+    p {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    audio {
+      width: 100%;
+      outline: none;
+      border-radius: 12px;
+    }
+
+    /* Ocultar el volumen */
+    audio::-webkit-media-controls-volume-slider,
+    audio::-webkit-media-controls-mute-button {
+      display: none !important;
+    }
+
+    .decoracion {
+      margin-top: 25px;
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Presiona play 💌</h1>
+    <p>Grabé esto con mucho cariño solo para ti...</p>
+
+    <audio controls>
+      <source src="nota-de-voz.mp3" type="audio/mpeg" />
+      Tu navegador no soporta el audio :(
+    </audio>
+
+    <img src="decoracion-audio.png" alt="Decoración" class="decoracion" />
+  </div>
+
+</body>
+</html>
