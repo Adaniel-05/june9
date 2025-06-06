@@ -109,29 +109,77 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>¿Me quieres mucho mucho?</h1>
+  <div class="container" id="container">
+    <h1>¿Me amas mucho mucho?</h1>
     <button class="btn btn-si" onclick="responderSi()">Sí</button>
-    <button class="btn btn-no" onclick="responderNo()">No</button>
-      <img src="decoracion2.png" alt="Decoración romántica" class="decoracion" />
+    <button class="btn btn-no" id="btnNo">No</button>
+    <img src="decoracion2.png" alt="Decoración romántica" class="decoracion" />
   </div>
-
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <p><br>Si claro, no te hagas la dificil<br></p>
-      <button onclick="cerrarPopup()">Cerrar</button>
-    </div>
-    
-
-  </div>
-
+<!-- ...existing code... -->
   <script>
     function responderSi() {
       window.location.href = "sorpresa.html"; // Página siguiente con la imagen
     }
 
+    // Movimiento del botón "No"
+    const btnNo = document.getElementById('btnNo');
+    const container = document.getElementById('container');
+
+
+    // Posición inicial centrada
+    btnNo.style.left = '50%';
+    btnNo.style.top = '60%';
+    btnNo.style.transform = 'translate(-50%, 0)';
+
+    
+btnNo.addEventListener('mouseenter', moverBotonNo);
+
+// Para que funcione en celulares (pantallas táctiles)
+btnNo.addEventListener('touchstart', function(e) {
+  e.preventDefault(); // Evita que se presione el botón
+  moverBotonNo();
+});
+
+
+    function activarBotonNo() {
+  // Cambia a posición absoluta solo la primera vez
+  if (btnNo.style.position !== 'absolute') {
+    btnNo.style.position = 'absolute';
+    // Calcula la posición actual respecto al contenedor
+    const containerRect = container.getBoundingClientRect();
+    const btnRect = btnNo.getBoundingClientRect();
+    const left = btnRect.left - containerRect.left;
+    const top = btnRect.top - containerRect.top;
+    btnNo.style.left = `${left}px`;
+    btnNo.style.top = `${top}px`;
+    btnNo.style.transform = 'none';
+  }
+  moverBotonNo();
+}
+
+btnNo.addEventListener('mouseenter', activarBotonNo);
+btnNo.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  activarBotonNo();
+});
+
+function moverBotonNo() {
+  const containerRect = container.getBoundingClientRect();
+  const btnRect = btnNo.getBoundingClientRect();
+
+  const maxLeft = containerRect.width - btnRect.width;
+  const maxTop = containerRect.height - btnRect.height;
+
+  const newLeft = Math.random() * maxLeft;
+  const newTop = Math.random() * maxTop;
+
+  btnNo.style.left = `${newLeft}px`;
+  btnNo.style.top = `${newTop}px`;
+  btnNo.style.transform = 'none';
+}
+
     function responderNo() {
-      document.getElementById('popup').style.display = 'flex';
+      // Ya no muestra popup ni nada
     }
 
     function cerrarPopup() {

@@ -1,102 +1,184 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>¡Feliz Cumpleaños!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎉 Feliz Cumpleaños</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
+      background: #fff6f6;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
       margin: 0;
       padding: 0;
-      background-color: #ffe6f0;
-      font-family: 'Arial', sans-serif;
+      overflow: hidden;
       display: flex;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
+      align-items: center;
+      flex-direction: column;
     }
 
-    .container {
-      text-align: center;
-      background-color: #fff0f6;
-      padding: 30px 20px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      max-width: 320px;
-      width: 100%;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      color: #ff4081;
-      margin-bottom: 25px;
-    }
-
-    label {
-      display: block;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      color: #444;
-    }
-
-    input[type="number"] {
-      padding: 10px;
-      width: 80%;
-      border: 2px solid #ff80ab;
-      border-radius: 10px;
-      font-size: 1rem;
-      text-align: center;
-      outline: none;
-    }
-
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: #ff4081;
-      color: white;
-      font-size: 1rem;
+    #start-btn {
+      font-size: 6vw;
+      padding: 4vw 8vw;
+      background-color: #ff6ec7;
       border: none;
-      border-radius: 12px;
+      border-radius: 15px;
+      color: white;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: transform 0.2s;
+      z-index: 2;
     }
 
-    button:hover {
-      background-color: #e73370;
+    #start-btn:hover {
+      transform: scale(1.05);
     }
-    .decoracion {
-  display: block;
-  margin: 30px auto 0 auto;
-  width: 150px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
 
+    #message-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3vw;
+      margin-top: 5vh;
+      opacity: 0;
+      transition: opacity 1s ease;
+      padding: 0 4vw;
+      text-align: center;
+    }
 
+    .word {
+      position: relative;
+      font-size: 6vw;
+      opacity: 0;
+      transform: scale(0.5);
+      animation: pop 0.5s forwards;
+      display: inline-block;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.4); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .balloon {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 5vw;
+    }
+
+    .float-away {
+      animation: floatUp 3s ease-in forwards;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-400px); opacity: 0; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>¡Feliz cumpleaños Nomi <3!</h1>
-    <label for="edad">¿Cuántos años cumples?</label>
-    <input type="number" id="edad" />
-    <button onclick="verificarEdad()">Enviar</button>
-      <img src="decoracion1.png" alt="Imagen decorativa" class="decoracion" />
-  </div>
+  <button id="start-btn">Empezar</button>
+  <div id="message-container"></div>
+  <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    function verificarEdad() {
-      const edad = document.getElementById('edad').value;
-      if (edad === '19') {
-        window.location.href = "pregunta.html"; // Cambia por la siguiente página
-      } else {
-        alert("Enserio?...");
-      }
+    const words = [
+      "¡Feliz", "cumpleaños!", 
+      "Mi", "Amor", "Hoy", 
+      "es", "tu", "dia"
+    ];
+    
+    // ...existing code...
+const pastelColors = [
+  "#FF1744", // rojo fuerte
+  "#F50057", // rosa fuerte
+  "#D500F9", // morado fuerte
+  "#2979FF", // azul fuerte
+  "#00E676", // verde fuerte
+  "#FFD600", // amarillo fuerte
+  "#FF9100", // naranja fuerte
+  "#00B8D4"  // turquesa fuerte
+];
+// ...existing code...
+
+    const messageContainer = document.getElementById("message-container");
+    const startBtn = document.getElementById("start-btn");
+
+    startBtn.addEventListener("click", async () => {
+      startBtn.style.display = "none";
+      messageContainer.style.opacity = 1;
+      await animateWords();
+      setTimeout(() => {
+        launchBalloons();
+        launchConfetti();
+      }, 1000);
+    });
+
+    // ...existing code...
+async function animateWords() {
+  // Quita el shuffle, usa el arreglo original
+  for (let i = 0; i < words.length; i++) {
+    const span = document.createElement("span");
+    span.className = "word";
+    span.style.color = pastelColors[i % pastelColors.length];
+    span.textContent = words[i];
+    span.style.animationDelay = `${i * 0.2}s`;
+    messageContainer.appendChild(span);
+    await new Promise(r => setTimeout(r, 300));
+  }
+}
+// ...existing code...
+
+    function launchBalloons() {
+      const wordEls = document.querySelectorAll('.word');
+      wordEls.forEach((el, i) => {
+        const balloon = document.createElement("div");
+        balloon.className = "balloon float-away";
+        balloon.textContent = "🎈";
+        el.appendChild(balloon);
+        el.classList.add("float-away");
+      });
+
+      setTimeout(() => {
+        // 👉 CAMBIA AQUÍ A TU SIGUIENTE PÁGINA:
+        window.location.href = "edad.html";
+      }, 3500);
+    }
+
+    function launchConfetti() {
+      const duration = 2 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 100,
+          origin: { x: 0 },
+          colors: pastelColors
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 100,
+          origin: { x: 1 },
+          colors: pastelColors
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
     }
   </script>
 
-
 </body>
 </html>
+
